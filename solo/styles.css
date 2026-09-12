@@ -103,7 +103,7 @@ body.no-dust #dust { display: none; }
 /* hero — morning mist over the garden */
 .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; overflow: clip; isolation: isolate; }
 .hero-still { position: absolute; inset: 0; }
-.hero-still img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.75) brightness(0.9); transform: scale(1.05); animation: kenburns 26s ease-out forwards; }
+.hero-still img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.75) brightness(0.9); transform: scale(1.05); animation: kenburns 34s ease-out forwards; }
 [data-theme="dark"] .hero-still img { filter: saturate(0.6) brightness(0.5); }
 @keyframes kenburns { from { transform: scale(1.1); } to { transform: scale(1.02); } }
 .hero-mist { position: absolute; inset: auto -20% 6% -20%; height: 30vh; filter: blur(40px); background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--paper) 55%, transparent), transparent); animation: mistdrift 18s ease-in-out infinite alternate; pointer-events: none; }
@@ -133,13 +133,14 @@ body.loaded .kana { animation: fadeUp 1.6s var(--expo) 1.5s forwards; }
 
 /* clearings — one scene, full and quiet */
 .clearing { position: relative; min-height: 100svh; display: flex; align-items: flex-end; overflow: clip; isolation: isolate; }
-.clearing-bg { position: absolute; inset: 0; }
-.clearing-bg img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8) brightness(0.88); }
+.clearing-bg { position: absolute; inset: -6% 0; }
+.clearing-bg img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8) brightness(0.88); transform: scale(1.09); transition: transform 9s linear, opacity 1.2s ease; will-change: transform, translate; }
+.clearing.in .clearing-bg img { transform: scale(1.01); }
 [data-theme="dark"] .clearing-bg img { filter: saturate(0.65) brightness(0.6); }
-.clearing::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 30%, transparent), transparent 30%, transparent 62%, rgba(10, 14, 10, 0.5)); pointer-events: none; }
+.clearing::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 30%, transparent), transparent 30%, transparent 62%, rgba(10, 14, 10, 0.5)), radial-gradient(120% 95% at 50% 50%, transparent 55%, rgba(5, 8, 6, 0.42) 100%); pointer-events: none; }
 .clearing-kana { position: absolute; top: 12vh; left: 6vw; font-size: clamp(15px, 2vw, 20px); color: #fdfbf4; opacity: 0.8; text-shadow: 0 1px 18px rgba(0,0,0,0.4); }
 .clearing-kana.right { left: auto; right: 6vw; }
-.clearing-cap { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 2px; padding: 0 7vw 11vh; color: #fdfbf4; }
+.clearing-cap { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 2px; padding: 0 7vw 11vh; color: #fdfbf4; will-change: translate; }
 .clearing-cap.left { align-items: flex-start; text-align: left; }
 .clearing-cap.right { align-items: flex-end; text-align: right; margin-left: auto; }
 .c-no { font-size: 11px; letter-spacing: 0.45em; opacity: 0.8; }
@@ -207,6 +208,10 @@ footer { border-top: 1px solid var(--line); padding: 56px 26px 72px; }
     .to-top { position: static; margin-top: 4px; }
     #grain { display: none; }
     .hero-still img { animation: none; transform: scale(1.02); }
+    .narration { font-size: 14px; max-width: 100%; }
+    .clearing-cap { padding: 0 7vw 13vh; }
+    .c-kanji { font-size: clamp(46px, 15vw, 80px); }
+    .kana .k { border-width: 1px; }
 }
 @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }

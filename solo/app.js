@@ -20,7 +20,7 @@ const isNight = () => document.documentElement.dataset.theme === 'dark';
 
 let lenis = null;
 if (!calm && window.Lenis) {
-    lenis = new Lenis({ duration: 1.4, smoothWheel: true });
+    lenis = new Lenis({ duration: 1.65, smoothWheel: true, touchMultiplier: 1.15 });
     const drive = t => { lenis.raf(t); requestAnimationFrame(drive); };
     requestAnimationFrame(drive);
 }
@@ -34,7 +34,7 @@ if (themeBtn) themeBtn.addEventListener('click', () => {
 });
 
 // ——— CINEMATIC SOUND: drone + wind + pentatonic chimes, all synthesized live ———
-let actx = null, master = null, delaySend = null, soundOn = false;
+let actx = null, master = null, delaySend = null, windBuf = null, soundOn = false;
 const PENTA = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5];
 function initAudio() {
     const AC = window.AudioContext || window.webkitAudioContext;
@@ -54,7 +54,7 @@ function initAudio() {
     const lp = actx.createBiquadFilter();
     lp.type = 'lowpass'; lp.frequency.value = 280;
     const dg = actx.createGain(); dg.gain.value = 0.05;
-    [55, 55.6, 110.4].forEach(f => {
+    [55, 55.6, 65.41, 98, 110.4].forEach(f => {
         const o = actx.createOscillator();
         o.type = 'sine'; o.frequency.value = f;
         o.connect(lp); o.start();
@@ -67,6 +67,7 @@ function initAudio() {
     for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
     const noise = actx.createBufferSource();
     noise.buffer = buf; noise.loop = true;
+    windBuf = buf;
     const bp = actx.createBiquadFilter();
     bp.type = 'bandpass'; bp.frequency.value = 420; bp.Q.value = 0.45;
     const wg = actx.createGain(); wg.gain.value = 0.02;
@@ -90,6 +91,48 @@ function chime(i) {
     g.gain.exponentialRampToValueAtTime(0.0001, t + 2.8);
     o.connect(g); g.connect(master); g.connect(delaySend);
     o.start(t); o.stop(t + 3);
+}
+// scene-cut swell — air rushing past the lens
+function swell() {
+    if (!soundOn || !actx || !windBuf) return;
+    if (actx.state === 'suspended') actx.resume();
+    const t = actx.currentTime;
+    const src = actx.createBufferSource();
+    src.buffer = windBuf; src.loop = true;
+    const bp = actx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.Q.value = 1.2;
+    bp.frequency.setValueAtTime(280, t);
+    bp.frequency.exponentialRampToValueAtTime(1400, t + 0.8);
+    bp.frequency.exponentialRampToValueAtTime(320, t + 1.8);
+    const g = actx.createGain();
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.05, t + 0.7);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 2);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(t); src.stop(t + 2.2);
+}
+// temple bell — once, when the finale arrives
+function bell() {
+    if (!soundOn || !actx) return;
+    if (actx.state === 'suspended') actx.resume();
+    const t = actx.currentTime;
+    [[174, 0.14], [351.5, 0.07], [511.6, 0.05], [690.8, 0.03]].forEach(([f, v]) => {
+        const o = actx.createOscillator();
+        o.type = 'sine'; o.frequency.value = f;
+        const g = actx.createGain();
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(v, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 7);
+        o.connect(g); g.connect(master); g.connect(delaySend);
+        o.start(t); o.stop(t + 7.2);
+    });
+}
+const closingEl = document.querySelector('.closing');
+if (closingEl) {
+    const bio = new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting) { bell(); bio.disconnect(); }
+    }), { threshold: 0.4 });
+    bio.observe(closingEl);
 }
 const soundBtn = document.getElementById('soundBtn');
 if (soundBtn) soundBtn.addEventListener('click', () => {
@@ -142,7 +185,11 @@ function setSeason(i) {
         t.setAttribute('aria-selected', k === n ? 'true' : 'false');
     });
 }
-tabs.forEach(t => t.addEventListener('click', () => setSeason(parseInt(t.dataset.s || '0', 10))));
+tabs.forEach(t => t.addEventListener('click', () => {
+    const i = parseInt(t.dataset.s || '0', 10);
+    setSeason(i);
+    chime(i + 2);
+}));
 
 const nav = document.getElementById('nav');
 requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('loaded')));
@@ -164,6 +211,15 @@ function frame() {
     document.querySelectorAll('.kana .k').forEach(l => l.classList.remove('is-on'));
     const link = document.querySelector('.kana .k[href="' + ids[best] + '"]');
     if (link) link.classList.add('is-on');
+    if (!calm && driftSet.size) {
+        const vh = innerHeight;
+        driftSet.forEach(o => {
+            const r = o.img.getBoundingClientRect();
+            const p = (r.top + r.height / 2 - vh / 2) / vh;
+            o.img.style.translate = `0 ${(p * -44).toFixed(1)}px`;
+            if (o.cap) o.cap.style.translate = `0 ${(p * 26).toFixed(1)}px`;
+        });
+    }
     tick = false;
 }
 addEventListener('scroll', () => { if (!tick) { requestAnimationFrame(frame); tick = true; } }, { passive: true });
@@ -183,9 +239,23 @@ const sio = new IntersectionObserver(es => es.forEach(e => {
     if (!el.classList.contains('in')) {
         el.classList.add('in');
         chime(clearings.indexOf(el));
+        swell();
     }
 }), { threshold: 0.45 });
 clearings.forEach(el => sio.observe(el));
+
+// documentary drift — backgrounds sink slower than captions
+const driftSet = new Set();
+const vio = new IntersectionObserver(es => es.forEach(e => {
+    const img = e.target.querySelector('.clearing-bg img');
+    const cap = e.target.querySelector('.clearing-cap');
+    if (!img) return;
+    let found = null;
+    driftSet.forEach(o => { if (o.img === img) found = o; });
+    if (e.isIntersecting && !found) driftSet.add({ img, cap });
+    if (!e.isIntersecting && found) driftSet.delete(found);
+}), { rootMargin: '10% 0px 10% 0px', threshold: 0 });
+clearings.forEach(el => vio.observe(el));
 
 // drifting leaves by day, fireflies by night
 (function drift() {
