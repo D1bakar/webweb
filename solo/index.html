@@ -3,50 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="NIHON 夏 — a summer day that burns into a festival night. No gallery. One film.">
-    <meta name="theme-color" content="#bfe3f2">
+    <meta name="description" content="NIHON 自然 — a quiet walk through moss, water, bamboo and stone.">
+    <meta name="theme-color" content="#ece9df">
     <meta name="color-scheme" content="light dark">
-    <meta property="og:title" content="NIHON 夏 — Summer, Day into Night">
-    <meta property="og:description" content="Ten scenes. Four seasons. One summer film.">
+    <meta property="og:title" content="NIHON 自然 — A Garden Walk">
+    <meta property="og:description" content="Moss, water, bamboo, stone. Walk slowly.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E5%A4%8F%3C/text%3E%3C/svg%3E">
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2400&q=80" fetchpriority="high">
-    <title>NIHON 夏 — Summer, Day into Night</title>
+    <meta property="og:image" content="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1200&q=80">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E8%87%AA%3C/text%3E%3C/svg%3E">
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=2400&q=80" fetchpriority="high">
+    <title>NIHON 自然 — A Garden Walk</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script>
     try { var nihonT = localStorage.getItem('nihon-theme'); if (!nihonT) nihonT = 'light'; document.documentElement.dataset.theme = nihonT; } catch (e) { document.documentElement.dataset.theme = 'light'; }
     </script>
-    <script type="importmap">
-    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
-    </script>
 </head>
 <body>
-    <div id="loader" aria-hidden="true"><span class="loader-kanji">夏</span><span class="loader-bar"><span></span></span></div>
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-        <defs>
-            <filter id="lens" x="-20%" y="-20%" width="140%" height="140%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="4" result="n"></feTurbulence>
-                <feDisplacementMap in="SourceGraphic" in2="n" scale="24" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
-            </filter>
-        </defs>
-    </svg>
-    <a class="skip" href="#atlas">Skip to the film</a>
-    <div id="progress" aria-hidden="true"></div>
+    <div id="loader" aria-hidden="true"><span class="loader-kanji">自</span><span class="loader-line"><span></span></span></div>
+    <a class="skip" href="#walk">Skip to the walk</a>
     <div id="grain" aria-hidden="true"></div>
     <div id="dot" aria-hidden="true"></div>
 
     <header class="nav" id="nav">
         <div class="wrap nav-in">
-            <span class="nav-lens" aria-hidden="true"></span>
-            <a class="brand magnetic" href="#top"><span class="jp">夏</span><span class="rom">NIHON · SUMMER</span></a>
+            <a class="brand" href="#top"><span class="jp">自然</span><span class="rom">NIHON · GARDEN</span></a>
             <nav class="menu" aria-label="Sections">
-                <a class="magnetic" href="#atlas">Film</a>
-                <a class="magnetic" href="#seasons">Seasons</a>
-                <button id="themeBtn" class="theme-btn magnetic" aria-label="Toggle day and night">
+                <a href="#walk">Walk</a>
+                <a href="#seasons">Seasons</a>
+                <button id="themeBtn" class="theme-btn" aria-label="Toggle day and night">
                     <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3L19 19M19 5l-1.7 1.7M6.7 17.3L5 19"/></svg>
                     <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13.2A8 8 0 0 1 10.8 4 8 8 0 1 0 20 13.2z"/></svg>
                 </button>
@@ -55,111 +42,96 @@
     </header>
 
     <section class="hero" id="top">
-        <div class="hero-still" data-depth="18" aria-hidden="true"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2400&q=80" srcset="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=70 1200w, https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2400&q=80 2400w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></div>
-        <canvas id="sky" aria-hidden="true"></canvas>
-        <canvas id="hanabi" aria-hidden="true"></canvas>
-        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-still" aria-hidden="true"><img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=2400&q=80" srcset="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1200&q=70 1200w, https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=2400&q=80 2400w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></div>
+        <div class="hero-mist" aria-hidden="true"></div>
         <canvas id="petals" aria-hidden="true"></canvas>
+        <span class="tategaki hero-kana" aria-hidden="true">しぜん</span>
         <div class="wrap hero-in">
-            <p class="hero-eyebrow">夏 — high summer</p>
-            <div class="hero-3d">
-                <h1 class="nippon">日本</h1>
-            </div>
-            <p class="tiny-line">summer sea — 12:00</p>
-            <p class="next-hint">scroll — the film begins</p>
+            <h1 class="nippon">自然</h1>
+            <p class="tiny-line">a garden walk — step softly</p>
+            <p class="next-hint">scroll — ゆっくり</p>
         </div>
         <div class="hero-foot wrap">
-            <div class="kana" aria-label="Film scenes">
-                <a class="k magnetic" href="#p-lake" aria-label="Scene 1 — Lake" title="Scene 1">湖</a>
-                <a class="k magnetic" href="#p-forest" aria-label="Scene 3 — Forest" title="Scene 3">森</a>
-                <a class="k magnetic" href="#p-road" aria-label="Scene 6 — Road" title="Scene 6">道</a>
-                <a class="k magnetic" href="#p-miyajima" aria-label="Scene 10 — Miyajima" title="Scene 10">宮</a>
+            <div class="kana" aria-label="Walk chapters">
+                <a class="k" href="#p-lake" aria-label="Water" title="Water">水</a>
+                <a class="k" href="#p-forest" aria-label="Forest" title="Forest">林</a>
+                <a class="k" href="#p-road" aria-label="Road" title="Road">道</a>
+                <a class="k" href="#p-miyajima" aria-label="Spirit" title="Spirit">心</a>
             </div>
-            <span class="scroll-line" aria-hidden="true"><span></span></span>
         </div>
     </section>
 
-    <main>
-        <section class="preface-sec">
-            <p class="preface reveal">夏。</p>
-            <p class="preface-sub reveal" style="--d:.15s">ten scenes · one summer · no gallery</p>
+    <main id="walk">
+        <section class="breath">
+            <p class="reveal">歩く — to walk is to listen.</p>
         </section>
 
-        <section class="atlas-head wrap" id="atlas">
-            <div class="reveal">
-                <p class="eyebrow-light">映画 — 10 scenes</p>
-                <h2>映画</h2>
-                <p class="atlas-hint">keep scrolling — the film plays itself</p>
-            </div>
+        <section class="clearing" id="p-lake">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1649583693539-f36f908da137?auto=format&fit=crop&w=1800&q=80" alt="Mount Fuji over Lake Kawaguchi at dawn" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana" aria-hidden="true">みず</span>
+            <div class="clearing-cap left reveal"><span class="c-no">01</span><span class="c-kanji">湖</span><span class="c-name">Lake Kawaguchi</span><span class="c-sub">still water</span></div>
         </section>
 
-        <section class="cinema" id="journey" aria-label="Summer film, ten scenes">
-            <div class="cinema-pin">
-                <div class="scene" id="p-lake" data-i="0">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1649583693539-f36f908da137?auto=format&fit=crop&w=1800&q=80" alt="Mount Fuji over Lake Kawaguchi at dawn" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">湖</span>
-                    <div class="scene-cap"><span class="scene-no">01 / 10</span><span class="scene-name">Lake Kawaguchi</span><span class="scene-sub">still water</span></div>
-                </div>
-                <div class="scene" id="p-torii" data-i="1">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1800&q=80" alt="Fushimi Inari torii gates in Kyoto" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">鳥</span>
-                    <div class="scene-cap"><span class="scene-no">02 / 10</span><span class="scene-name">Fushimi Inari</span><span class="scene-sub">a thousand gates</span></div>
-                </div>
-                <div class="scene" id="p-forest" data-i="2">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1702564492961-3643703480c2?auto=format&fit=crop&w=1800&q=80" alt="Arashiyama bamboo grove in Kyoto" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">竹</span>
-                    <div class="scene-cap"><span class="scene-no">03 / 10</span><span class="scene-name">Arashiyama</span><span class="scene-sub">deep green</span></div>
-                </div>
-                <div class="scene" id="p-moss" data-i="3">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1800&q=80" alt="Quiet green forest light" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">苔</span>
-                    <div class="scene-cap"><span class="scene-no">04 / 10</span><span class="scene-name">Yakushima</span><span class="scene-sub">only wind</span></div>
-                </div>
-                <div class="scene" id="p-tea" data-i="4">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1582793988951-9aed5509eb97?auto=format&fit=crop&w=1800&q=80" alt="Green tea fields in Shizuoka" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">茶</span>
-                    <div class="scene-cap"><span class="scene-no">05 / 10</span><span class="scene-name">Shizuoka</span><span class="scene-sub">tea rows</span></div>
-                </div>
-                <div class="scene" id="p-road" data-i="5">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1505069190533-da1c9af13346?auto=format&fit=crop&w=1800&q=80" alt="Country road with Mount Fuji ahead" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">道</span>
-                    <div class="scene-cap"><span class="scene-no">06 / 10</span><span class="scene-name">Inaka</span><span class="scene-sub">village road</span></div>
-                </div>
-                <div class="scene" id="p-kyo" data-i="6">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1800&q=80" alt="Old Kyoto temple street in the morning" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">京</span>
-                    <div class="scene-cap"><span class="scene-no">07 / 10</span><span class="scene-name">Kyoto</span><span class="scene-sub">morning bells</span></div>
-                </div>
-                <div class="scene" id="p-machi" data-i="7">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=1800&q=80" alt="Soft Tokyo skyline fading into dusk haze" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">街</span>
-                    <div class="scene-cap"><span class="scene-no">08 / 10</span><span class="scene-name">Tokyo</span><span class="scene-sub">dusk haze</span></div>
-                </div>
-                <div class="scene" id="p-fuji" data-i="8">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1800&q=80" alt="Chureito pagoda with Mount Fuji and sakura" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">富士</span>
-                    <div class="scene-cap"><span class="scene-no">09 / 10</span><span class="scene-name">Fuji</span><span class="scene-sub">spirit</span></div>
-                </div>
-                <div class="scene" id="p-miyajima" data-i="9">
-                    <img class="scene-img" src="https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1800&q=80" alt="Floating torii gate at Miyajima in calm water" loading="lazy" decoding="async">
-                    <div class="scene-shade"></div>
-                    <span class="scene-kanji" aria-hidden="true">宮</span>
-                    <div class="scene-cap"><span class="scene-no">10 / 10</span><span class="scene-name">Miyajima</span><span class="scene-sub">the floating gate</span></div>
-                </div>
-                <div class="cinema-ui" aria-hidden="true">
-                    <span id="jcur">01</span><span class="cinema-total">/ 10</span>
-                    <div class="cinema-bar"><span id="jprog"></span></div>
-                </div>
-            </div>
+        <section class="clearing" id="p-torii">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1800&q=80" alt="Moss-soft torii gates in Kyoto" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana right" aria-hidden="true">もり</span>
+            <div class="clearing-cap right reveal"><span class="c-no">02</span><span class="c-kanji">鳥居</span><span class="c-name">Fushimi Inari</span><span class="c-sub">a thousand gates</span></div>
+        </section>
+
+        <section class="breath"><p class="reveal">苔の匂い — the smell of moss after rain.</p></section>
+
+        <section class="clearing" id="p-forest">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1702564492961-3643703480c2?auto=format&fit=crop&w=1800&q=80" alt="Arashiyama bamboo grove in Kyoto" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana" aria-hidden="true">たけ</span>
+            <div class="clearing-cap left reveal"><span class="c-no">03</span><span class="c-kanji">竹</span><span class="c-name">Arashiyama</span><span class="c-sub">bamboo rain</span></div>
+        </section>
+
+        <section class="clearing" id="p-moss">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1800&q=80" alt="Quiet green forest light" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana right" aria-hidden="true">こけ</span>
+            <div class="clearing-cap right reveal"><span class="c-no">04</span><span class="c-kanji">苔</span><span class="c-name">Yakushima</span><span class="c-sub">only wind</span></div>
+        </section>
+
+        <section class="breath"><p class="reveal">一服 — pause for tea.</p></section>
+
+        <section class="clearing" id="p-tea">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1582793988951-9aed5509eb97?auto=format&fit=crop&w=1800&q=80" alt="Green tea fields in Shizuoka" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana" aria-hidden="true">ちゃ</span>
+            <div class="clearing-cap left reveal"><span class="c-no">05</span><span class="c-kanji">茶</span><span class="c-name">Shizuoka</span><span class="c-sub">tea rows</span></div>
+        </section>
+
+        <section class="clearing" id="p-road">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1505069190533-da1c9af13346?auto=format&fit=crop&w=1800&q=80" alt="Country road with Mount Fuji ahead" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana right" aria-hidden="true">みち</span>
+            <div class="clearing-cap right reveal"><span class="c-no">06</span><span class="c-kanji">道</span><span class="c-name">Inaka</span><span class="c-sub">the long road</span></div>
+        </section>
+
+        <section class="breath"><p class="reveal">夕立 — evening rain passes quickly.</p></section>
+
+        <section class="clearing" id="p-kyo">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1800&q=80" alt="Old Kyoto temple street in the morning" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana" aria-hidden="true">きょう</span>
+            <div class="clearing-cap left reveal"><span class="c-no">07</span><span class="c-kanji">京</span><span class="c-name">Kyoto</span><span class="c-sub">morning bells</span></div>
+        </section>
+
+        <section class="clearing" id="p-machi">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=1800&q=80" alt="Soft Tokyo skyline fading into dusk haze" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana right" aria-hidden="true">まち</span>
+            <div class="clearing-cap right reveal"><span class="c-no">08</span><span class="c-kanji">街</span><span class="c-name">Tokyo</span><span class="c-sub">dusk haze</span></div>
+        </section>
+
+        <section class="breath"><p class="reveal">心 — what remains when noise leaves.</p></section>
+
+        <section class="clearing" id="p-fuji">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1800&q=80" alt="Chureito pagoda with Mount Fuji" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana" aria-hidden="true">ふじ</span>
+            <div class="clearing-cap left reveal"><span class="c-no">09</span><span class="c-kanji">富士</span><span class="c-name">Fuji</span><span class="c-sub">spirit</span></div>
+        </section>
+
+        <section class="clearing" id="p-miyajima">
+            <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1800&q=80" alt="Floating torii gate at Miyajima in calm water" loading="lazy" decoding="async"></div>
+            <span class="tategaki clearing-kana right" aria-hidden="true">みや</span>
+            <div class="clearing-cap right reveal"><span class="c-no">10</span><span class="c-kanji">宮島</span><span class="c-name">Miyajima</span><span class="c-sub">the floating gate</span></div>
         </section>
 
         <section class="stage" id="seasons" aria-label="Seasons">
@@ -169,41 +141,35 @@
             <div class="stage-bg" data-s="3"><img src="https://images.unsplash.com/photo-1557409518-691ebcd96038?auto=format&fit=crop&w=1800&q=70" alt="" loading="lazy" decoding="async"></div>
             <div class="stage-shade"></div>
             <div class="wrap stage-ui">
-                <p class="eyebrow">四季 — touch a season</p>
-                <div class="season-tabs" role="tablist" aria-label="Seasons">
-                    <button class="stab on" data-s="0" role="tab" aria-selected="true"><span class="stab-kanji">春</span><span class="stab-rom">spring</span></button>
-                    <button class="stab" data-s="1" role="tab" aria-selected="false"><span class="stab-kanji">夏</span><span class="stab-rom">summer</span></button>
-                    <button class="stab" data-s="2" role="tab" aria-selected="false"><span class="stab-kanji">秋</span><span class="stab-rom">autumn</span></button>
-                    <button class="stab" data-s="3" role="tab" aria-selected="false"><span class="stab-kanji">冬</span><span class="stab-rom">winter</span></button>
+                <p class="stage-eyebrow">四季 — the year, quietly</p>
+                <div class="season-row" role="tablist" aria-label="Seasons">
+                    <button class="sbtn on" data-s="0" role="tab" aria-selected="true">春<span>spring</span></button>
+                    <button class="sbtn" data-s="1" role="tab" aria-selected="false">夏<span>summer</span></button>
+                    <button class="sbtn" data-s="2" role="tab" aria-selected="false">秋<span>autumn</span></button>
+                    <button class="sbtn" data-s="3" role="tab" aria-selected="false">冬<span>winter</span></button>
                 </div>
             </div>
         </section>
 
         <section class="closing">
             <div class="wrap narrow reveal">
-                <svg class="kanji-draw" viewBox="0 0 200 200" role="img" aria-label="Summer">
-                    <text x="50%" y="54%" text-anchor="middle" dominant-baseline="central">夏</text>
+                <svg class="kanji-draw" viewBox="0 0 200 200" role="img" aria-label="Forest">
+                    <text x="50%" y="54%" text-anchor="middle" dominant-baseline="central">森</text>
                 </svg>
-                <p class="closing-sub">summer, burning out — 花火</p>
+                <p class="closing-sub">the walk ends where it began — もり</p>
             </div>
         </section>
     </main>
 
     <footer id="colophon">
         <div class="wrap foot-in">
-            <a class="brand foot-brand magnetic" href="#top"><span class="jp">夏</span><span class="rom">NIHON · SUMMER</span></a>
-            <nav class="foot-nav" aria-label="Footer">
-                <a href="#atlas">Film</a>
-                <a href="#seasons">Seasons</a>
-                <a href="#top">Top</a>
-            </nav>
-            <p class="dim">夏 — <span id="year">2026</span></p>
-            <button id="toTop" class="to-top magnetic" aria-label="Back to top">↑</button>
+            <a class="brand foot-brand" href="#top"><span class="jp">自然</span><span class="rom">NIHON · GARDEN</span></a>
+            <p class="dim">歩く — <span id="year">2026</span></p>
+            <button id="toTop" class="to-top" aria-label="Back to top">↑</button>
         </div>
     </footer>
 
     <script src="lenis.min.js"></script>
-    <script type="module" src="sky.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
