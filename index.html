@@ -23,7 +23,10 @@
 </head>
 <body>
     <div id="loader" aria-hidden="true"><span class="loader-kanji">自</span><span class="loader-line"><span></span></span></div>
-    <a class="skip" href="#walk">Skip to the walk</a>
+    <a class="skip" href="#walk">Skip to the film</a>
+    <canvas id="dust" aria-hidden="true"></canvas>
+    <div id="bar-top" aria-hidden="true"></div>
+    <div id="bar-bottom" aria-hidden="true"></div>
     <div id="grain" aria-hidden="true"></div>
     <div id="dot" aria-hidden="true"></div>
 
@@ -36,6 +39,10 @@
                 <button id="themeBtn" class="theme-btn" aria-label="Toggle day and night">
                     <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3L19 19M19 5l-1.7 1.7M6.7 17.3L5 19"/></svg>
                     <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13.2A8 8 0 0 1 10.8 4 8 8 0 1 0 20 13.2z"/></svg>
+                </button>
+                <button id="soundBtn" class="theme-btn sound-btn" aria-label="Toggle cinematic sound" aria-pressed="false">
+                    <svg class="icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5L11 19V5z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
+                    <svg class="icon-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M11 5 6.5 9H3v6h3.5L11 19V5z"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6M18.2 6.8a7.4 7.4 0 0 1 0 10.4"/></svg>
                 </button>
             </nav>
         </div>
@@ -63,19 +70,20 @@
 
     <main id="walk">
         <section class="breath">
-            <p class="reveal">歩く — to walk is to listen.</p>
+            <p class="act-kicker reveal">ACT I — 水</p>
+            <p class="reveal" style="--d:.1s">歩く — to walk is to listen.</p>
         </section>
 
         <section class="clearing" id="p-lake">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1649583693539-f36f908da137?auto=format&fit=crop&w=1800&q=80" alt="Mount Fuji over Lake Kawaguchi at dawn" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana" aria-hidden="true">みず</span>
-            <div class="clearing-cap left reveal"><span class="c-no">01</span><span class="c-kanji">湖</span><span class="c-name">Lake Kawaguchi</span><span class="c-sub">still water</span></div>
+            <div class="clearing-cap left reveal"><span class="c-no">01</span><span class="c-kanji">湖</span><span class="c-name">Lake Kawaguchi</span><span class="c-sub">still water</span><span class="narration">The mountain arrives before you do — it has been waiting all night.</span></div>
         </section>
 
         <section class="clearing" id="p-torii">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1800&q=80" alt="Moss-soft torii gates in Kyoto" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana right" aria-hidden="true">もり</span>
-            <div class="clearing-cap right reveal"><span class="c-no">02</span><span class="c-kanji">鳥居</span><span class="c-name">Fushimi Inari</span><span class="c-sub">a thousand gates</span></div>
+            <div class="clearing-cap right reveal"><span class="c-no">02</span><span class="c-kanji">鳥居</span><span class="c-name">Fushimi Inari</span><span class="c-sub">a thousand gates</span><span class="narration">A thousand gates — and every one of them opens inward.</span></div>
         </section>
 
         <section class="breath"><p class="reveal">苔の匂い — the smell of moss after rain.</p></section>
@@ -83,27 +91,27 @@
         <section class="clearing" id="p-forest">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1702564492961-3643703480c2?auto=format&fit=crop&w=1800&q=80" alt="Arashiyama bamboo grove in Kyoto" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana" aria-hidden="true">たけ</span>
-            <div class="clearing-cap left reveal"><span class="c-no">03</span><span class="c-kanji">竹</span><span class="c-name">Arashiyama</span><span class="c-sub">bamboo rain</span></div>
+            <div class="clearing-cap left reveal"><span class="c-no">03</span><span class="c-kanji">竹</span><span class="c-name">Arashiyama</span><span class="c-sub">bamboo rain</span><span class="narration">Bamboo does not hurry — yet everything gets done.</span></div>
         </section>
 
         <section class="clearing" id="p-moss">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1800&q=80" alt="Quiet green forest light" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana right" aria-hidden="true">こけ</span>
-            <div class="clearing-cap right reveal"><span class="c-no">04</span><span class="c-kanji">苔</span><span class="c-name">Yakushima</span><span class="c-sub">only wind</span></div>
+            <div class="clearing-cap right reveal"><span class="c-no">04</span><span class="c-kanji">苔</span><span class="c-name">Yakushima</span><span class="c-sub">only wind</span><span class="narration">Here, silence has a texture. Touch nothing.</span></div>
         </section>
 
-        <section class="breath"><p class="reveal">一服 — pause for tea.</p></section>
+        <section class="breath"><p class="act-kicker reveal">ACT II — 里</p><p class="reveal" style="--d:.1s">一服 — pause for tea.</p></section>
 
         <section class="clearing" id="p-tea">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1582793988951-9aed5509eb97?auto=format&fit=crop&w=1800&q=80" alt="Green tea fields in Shizuoka" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana" aria-hidden="true">ちゃ</span>
-            <div class="clearing-cap left reveal"><span class="c-no">05</span><span class="c-kanji">茶</span><span class="c-name">Shizuoka</span><span class="c-sub">tea rows</span></div>
+            <div class="clearing-cap left reveal"><span class="c-no">05</span><span class="c-kanji">茶</span><span class="c-name">Shizuoka</span><span class="c-sub">tea rows</span><span class="narration">Every row of tea is a sentence the hill is writing.</span></div>
         </section>
 
         <section class="clearing" id="p-road">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1505069190533-da1c9af13346?auto=format&fit=crop&w=1800&q=80" alt="Country road with Mount Fuji ahead" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana right" aria-hidden="true">みち</span>
-            <div class="clearing-cap right reveal"><span class="c-no">06</span><span class="c-kanji">道</span><span class="c-name">Inaka</span><span class="c-sub">the long road</span></div>
+            <div class="clearing-cap right reveal"><span class="c-no">06</span><span class="c-kanji">道</span><span class="c-name">Inaka</span><span class="c-sub">the long road</span><span class="narration">The road never asks where you are going.</span></div>
         </section>
 
         <section class="breath"><p class="reveal">夕立 — evening rain passes quickly.</p></section>
@@ -111,27 +119,27 @@
         <section class="clearing" id="p-kyo">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1800&q=80" alt="Old Kyoto temple street in the morning" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana" aria-hidden="true">きょう</span>
-            <div class="clearing-cap left reveal"><span class="c-no">07</span><span class="c-kanji">京</span><span class="c-name">Kyoto</span><span class="c-sub">morning bells</span></div>
+            <div class="clearing-cap left reveal"><span class="c-no">07</span><span class="c-kanji">京</span><span class="c-name">Kyoto</span><span class="c-sub">morning bells</span><span class="narration">Morning bells. The city bows before it speaks.</span></div>
         </section>
 
         <section class="clearing" id="p-machi">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=1800&q=80" alt="Soft Tokyo skyline fading into dusk haze" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana right" aria-hidden="true">まち</span>
-            <div class="clearing-cap right reveal"><span class="c-no">08</span><span class="c-kanji">街</span><span class="c-name">Tokyo</span><span class="c-sub">dusk haze</span></div>
+            <div class="clearing-cap right reveal"><span class="c-no">08</span><span class="c-kanji">街</span><span class="c-name">Tokyo</span><span class="c-sub">dusk haze</span><span class="narration">Ten million lights — each one a small kept promise.</span></div>
         </section>
 
-        <section class="breath"><p class="reveal">心 — what remains when noise leaves.</p></section>
+        <section class="breath"><p class="act-kicker reveal">ACT III — 心</p><p class="reveal" style="--d:.1s">心 — what remains when noise leaves.</p></section>
 
         <section class="clearing" id="p-fuji">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1800&q=80" alt="Chureito pagoda with Mount Fuji" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana" aria-hidden="true">ふじ</span>
-            <div class="clearing-cap left reveal"><span class="c-no">09</span><span class="c-kanji">富士</span><span class="c-name">Fuji</span><span class="c-sub">spirit</span></div>
+            <div class="clearing-cap left reveal"><span class="c-no">09</span><span class="c-kanji">富士</span><span class="c-name">Fuji</span><span class="c-sub">spirit</span><span class="narration">Some mountains you climb. This one you meet.</span></div>
         </section>
 
         <section class="clearing" id="p-miyajima">
             <div class="clearing-bg"><img src="https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1800&q=80" alt="Floating torii gate at Miyajima in calm water" loading="lazy" decoding="async"></div>
             <span class="tategaki clearing-kana right" aria-hidden="true">みや</span>
-            <div class="clearing-cap right reveal"><span class="c-no">10</span><span class="c-kanji">宮島</span><span class="c-name">Miyajima</span><span class="c-sub">the floating gate</span></div>
+            <div class="clearing-cap right reveal"><span class="c-no">10</span><span class="c-kanji">宮島</span><span class="c-name">Miyajima</span><span class="c-sub">the floating gate</span><span class="narration">The gate floats — because faith needs no foundation.</span></div>
         </section>
 
         <section class="stage" id="seasons" aria-label="Seasons">
@@ -159,6 +167,20 @@
                 <p class="closing-sub">the walk ends where it began — もり</p>
             </div>
         </section>
+
+        <section class="credits" aria-label="End credits">
+            <div class="wrap narrow reveal">
+                <p class="cred-kicker">END CREDITS — 終</p>
+                <dl class="cred-list">
+                    <div><dt>Starring</dt><dd>Moss · Water · Bamboo · Stone</dd></div>
+                    <div><dt>Sound</dt><dd>The Wind — synthesized live in your browser</dd></div>
+                    <div><dt>Light</dt><dd>The Sun, uncredited</dd></div>
+                    <div><dt>Directed by</dt><dd>Nature</dd></div>
+                    <div><dt>Shot on</dt><dd>Scroll</dd></div>
+                </dl>
+                <p class="cred-fin">A NIHON PICTURE</p>
+            </div>
+        </section>
     </main>
 
     <footer id="colophon">
@@ -170,6 +192,7 @@
     </footer>
 
     <script src="solo/lenis.min.js"></script>
+    <script type="module" src="solo/film.js"></script>
     <script src="solo/app.js"></script>
 </body>
 </html>

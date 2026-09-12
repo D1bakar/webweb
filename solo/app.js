@@ -33,6 +33,78 @@ if (themeBtn) themeBtn.addEventListener('click', () => {
     try { localStorage.setItem('nihon-theme', next); } catch (e) { /* private mode */ }
 });
 
+// ——— CINEMATIC SOUND: drone + wind + pentatonic chimes, all synthesized live ———
+let actx = null, master = null, delaySend = null, soundOn = false;
+const PENTA = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5];
+function initAudio() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    actx = new AC();
+    master = actx.createGain();
+    master.gain.value = 0;
+    master.connect(actx.destination);
+    // cathedral space
+    const delay = actx.createDelay(1);
+    delay.delayTime.value = 0.45;
+    const fb = actx.createGain();
+    fb.gain.value = 0.35;
+    delay.connect(fb); fb.connect(delay); delay.connect(master);
+    delaySend = delay;
+    // low earth drone
+    const lp = actx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 280;
+    const dg = actx.createGain(); dg.gain.value = 0.05;
+    [55, 55.6, 110.4].forEach(f => {
+        const o = actx.createOscillator();
+        o.type = 'sine'; o.frequency.value = f;
+        o.connect(lp); o.start();
+    });
+    lp.connect(dg); dg.connect(master);
+    // wind through bamboo
+    const len = actx.sampleRate * 2;
+    const buf = actx.createBuffer(1, len, actx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const noise = actx.createBufferSource();
+    noise.buffer = buf; noise.loop = true;
+    const bp = actx.createBiquadFilter();
+    bp.type = 'bandpass'; bp.frequency.value = 420; bp.Q.value = 0.45;
+    const wg = actx.createGain(); wg.gain.value = 0.02;
+    const lfo = actx.createOscillator(); lfo.frequency.value = 0.07;
+    const lfoG = actx.createGain(); lfoG.gain.value = 0.014;
+    lfo.connect(lfoG); lfoG.connect(wg.gain); lfo.start();
+    noise.connect(bp); bp.connect(wg); wg.connect(master);
+    noise.start();
+    return true;
+}
+function chime(i) {
+    if (!soundOn || !actx) return;
+    if (actx.state === 'suspended') actx.resume();
+    const t = actx.currentTime;
+    const o = actx.createOscillator();
+    o.type = 'triangle';
+    o.frequency.value = PENTA[((i % PENTA.length) + PENTA.length) % PENTA.length];
+    const g = actx.createGain();
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.16, t + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 2.8);
+    o.connect(g); g.connect(master); g.connect(delaySend);
+    o.start(t); o.stop(t + 3);
+}
+const soundBtn = document.getElementById('soundBtn');
+if (soundBtn) soundBtn.addEventListener('click', () => {
+    if (!actx && !initAudio()) return;
+    if (actx.state === 'suspended') actx.resume();
+    soundOn = !soundOn;
+    const t = actx.currentTime;
+    master.gain.cancelScheduledValues(t);
+    master.gain.setValueAtTime(master.gain.value, t);
+    master.gain.linearRampToValueAtTime(soundOn ? 0.6 : 0, t + 1.2);
+    soundBtn.classList.toggle('on', soundOn);
+    soundBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+    if (soundOn) chime(0);
+});
+
 document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
     const id = a.getAttribute('href');
     if (id.length < 2) return;
@@ -102,6 +174,18 @@ const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
 }), { threshold: 0.16, rootMargin: '0px 0px -6% 0px' });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// each shot entering frame plays its note
+const clearings = [...document.querySelectorAll('.clearing')];
+const sio = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    if (!el.classList.contains('in')) {
+        el.classList.add('in');
+        chime(clearings.indexOf(el));
+    }
+}), { threshold: 0.45 });
+clearings.forEach(el => sio.observe(el));
 
 // drifting leaves by day, fireflies by night
 (function drift() {
