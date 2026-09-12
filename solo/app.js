@@ -2,6 +2,7 @@ const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
 const fine = !calm && !coarse;
 if (calm) document.body.classList.add('calm');
+const isNight = () => document.documentElement.dataset.theme === 'dark';
 
 // loader — always clears, even if assets hang
 (function loader() {
@@ -25,10 +26,39 @@ if (!calm && window.Lenis) {
     requestAnimationFrame(drive);
 }
 
-const journey = document.getElementById('journey');
-const track = document.querySelector('.journey-track');
-let lastJX = 0;
-const trackMax = () => (track ? Math.max(0, track.scrollWidth - innerWidth) : 0);
+// day / night — remembered, summer first
+const themeBtn = document.getElementById('themeBtn');
+if (themeBtn) themeBtn.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('nihon-theme', next); } catch (e) { /* private mode */ }
+});
+
+const cinema = document.getElementById('journey');
+const scenes = [...document.querySelectorAll('.scene')];
+const jprog = document.getElementById('jprog');
+const jcur = document.getElementById('jcur');
+let curScene = -1;
+const pad2 = n => (n < 10 ? '0' + n : '' + n);
+function driveCinema(y) {
+    if (!cinema || !scenes.length) return;
+    if (calm) {
+        if (curScene !== 0) { scenes.forEach(s => s.classList.add('on')); curScene = 0; }
+        return;
+    }
+    const total = Math.max(1, cinema.offsetHeight - innerHeight);
+    const r = cinema.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, -r.top / total));
+    const pos = p * scenes.length;
+    let idx = Math.min(scenes.length - 1, Math.floor(pos));
+    if (r.bottom < 0 || r.top > innerHeight) idx = curScene < 0 ? 0 : curScene;
+    if (idx !== curScene) {
+        scenes.forEach((s, i) => s.classList.toggle('on', i === idx));
+        curScene = idx;
+        if (jcur) jcur.textContent = pad2(idx + 1);
+    }
+    if (jprog) jprog.style.transform = `scaleX(${p.toFixed(4)})`;
+}
 
 document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
     const id = a.getAttribute('href');
@@ -36,14 +66,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click
     const el = document.querySelector(id);
     if (!el) return;
     e.preventDefault();
-    // chapters live inside the sideways track — drive the journey there
-    if (el.classList && el.classList.contains('place') && journey && track && !calm) {
-        const max = trackMax();
-        const tr = track.getBoundingClientRect();
-        const cr = el.getBoundingClientRect();
-        const cx = (cr.left + cr.width / 2 - tr.left) - innerWidth / 2;
-        const p = Math.min(1, Math.max(0, max > 0 ? cx / max : 0));
-        const y = journey.offsetTop + p * Math.max(0, journey.offsetHeight - innerHeight);
+    // scenes live inside the film — scroll the film to that moment
+    if (el.classList && el.classList.contains('scene') && cinema && !calm) {
+        const i = scenes.indexOf(el);
+        const total = Math.max(1, cinema.offsetHeight - innerHeight);
+        const y = cinema.offsetTop + (total * (i + 0.5)) / scenes.length;
         if (lenis) lenis.scrollTo(y);
         else scrollTo({ top: y, behavior: 'smooth' });
         return;
@@ -59,14 +86,6 @@ if (toTop) toTop.addEventListener('click', () => {
 const yr = document.getElementById('year');
 if (yr) yr.textContent = new Date().getFullYear();
 
-// day / night — remembered, calm by default
-const themeBtn = document.getElementById('themeBtn');
-if (themeBtn) themeBtn.addEventListener('click', () => {
-    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem('nihon-theme', next); } catch (e) { /* private mode */ }
-});
-
 // buttery image fade-in — opacity only, never blocks content
 document.querySelectorAll('img').forEach(img => {
     if (img.complete && img.naturalWidth > 0) img.classList.add('ok');
@@ -76,24 +95,35 @@ document.querySelectorAll('img').forEach(img => {
     }
 });
 
+// season stage — touch a season, the world becomes it; drifts alone until touched
+const tabs = [...document.querySelectorAll('.stab')];
+const bgs = [...document.querySelectorAll('.stage-bg')];
+let curSeason = 0, seasonTouched = false, seasonTimer = 0;
+function setSeason(i) {
+    curSeason = (i + bgs.length) % bgs.length;
+    bgs.forEach((b, k) => b.classList.toggle('on', k === curSeason));
+    tabs.forEach((t, k) => {
+        t.classList.toggle('on', k === curSeason);
+        t.setAttribute('aria-selected', k === curSeason ? 'true' : 'false');
+    });
+}
+tabs.forEach(t => t.addEventListener('click', () => {
+    seasonTouched = true;
+    clearInterval(seasonTimer);
+    setSeason(parseInt(t.dataset.s || '0', 10));
+}));
+if (!calm && bgs.length > 1) {
+    seasonTimer = setInterval(() => {
+        if (document.hidden || seasonTouched) return;
+        const r = document.getElementById('seasons').getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) return;
+        setSeason(curSeason + 1);
+    }, 5000);
+}
+
 const nav = document.getElementById('nav');
 const progress = document.getElementById('progress');
 const heroIn = document.querySelector('.hero-in');
-const jprog = document.getElementById('jprog');
-const backs = [...document.querySelectorAll('.layer-back')];
-// only parallax images actually on screen — never layout-scan the whole page
-const visibleBacks = new Set();
-if ('IntersectionObserver' in window) {
-    const vio = new IntersectionObserver(es => es.forEach(e => {
-        const img = e.target.querySelector('.layer-back');
-        if (!img) return;
-        if (e.isIntersecting) visibleBacks.add(img);
-        else visibleBacks.delete(img);
-    }), { rootMargin: '20% 0px 20% 0px', threshold: 0 });
-    document.querySelectorAll('.place figure').forEach(el => vio.observe(el));
-} else {
-    backs.forEach(img => visibleBacks.add(img));
-}
 requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('loaded')));
 let tick = false, lastY = 0;
 const heroEl = document.querySelector('.hero');
@@ -127,14 +157,18 @@ function frame() {
     else if (y < lastY - 4) nav.classList.remove('hide');
     lastY = y;
     if (progress) progress.style.transform = `scaleX(${h > 0 ? (y / h).toFixed(4) : 0})`;
-    // THE JOURNEY — vertical scroll drifts the track sideways
-    if (journey && track && !calm) {
-        const r = journey.getBoundingClientRect();
-        const total = Math.max(1, journey.offsetHeight - innerHeight);
-        const p = Math.min(1, Math.max(0, -r.top / total));
-        lastJX = -(p * trackMax());
-        track.style.translate = `${lastJX.toFixed(1)}px 0`;
-        if (jprog) jprog.style.transform = `scaleX(${p.toFixed(4)})`;
+    driveCinema(y);
+    // kana spy follows the film
+    if (curScene >= 0) {
+        const map = [['#p-lake', 0], ['#p-forest', 2], ['#p-road', 5], ['#p-miyajima', 9]];
+        document.querySelectorAll('.kana .k').forEach(l => l.classList.remove('is-on'));
+        let best = 0, bd = 99;
+        map.forEach(([sel, si], k) => {
+            const d = Math.abs(curScene - si);
+            if (d < bd) { bd = d; best = k; }
+        });
+        const link = document.querySelector('.kana .k[href="' + map[best][0] + '"]');
+        if (link) link.classList.add('is-on');
     }
     if (!calm && heroEl && heroStill && y < innerHeight * 1.15) {
         heroStill.style.transform = `translate3d(0,${(y * 0.18).toFixed(1)}px,0)`;
@@ -143,14 +177,6 @@ function frame() {
         heroIn.style.opacity = Math.max(0, 1 - y / (innerHeight * 0.85)).toFixed(3);
         heroIn.style.translate = `0 ${(y * 0.12).toFixed(1)}px`;
     }
-    if (!calm && visibleBacks.size) {
-        const vh = innerHeight;
-        for (const img of visibleBacks) {
-            const r = img.getBoundingClientRect();
-            const p = (r.top + r.height / 2 - vh / 2) / vh;
-            img.style.translate = `0 ${(p * -46).toFixed(1)}px`;
-        }
-    }
     tick = false;
 }
 addEventListener('scroll', () => { if (!tick) { requestAnimationFrame(frame); tick = true; } }, { passive: true });
@@ -158,97 +184,76 @@ if (lenis) lenis.on('scroll', () => { if (!tick) { requestAnimationFrame(frame);
 addEventListener('resize', () => { if (!tick) { requestAnimationFrame(frame); tick = true; } });
 frame();
 
-// 3D tilt cards — pointer-fine devices only
-if (fine) {
-    document.querySelectorAll('.tilt').forEach(card => {
-        const inner = card.matches('.place') ? card.querySelector('figure') : card;
-        if (!inner) return;
-        let raf = 0, rx = 0, ry = 0, trx = 0, try_ = 0;
-        const max = card.classList.contains('season-card') ? 12 : 7;
-        const render = () => {
-            rx += (trx - rx) * 0.14;
-            ry += (try_ - ry) * 0.14;
-            inner.style.setProperty('--rx', rx.toFixed(2) + 'deg');
-            inner.style.setProperty('--ry', ry.toFixed(2) + 'deg');
-            if (Math.abs(trx - rx) > 0.02 || Math.abs(try_ - ry) > 0.02) raf = requestAnimationFrame(render);
-            else raf = 0;
-        };
-        const kick = () => { if (!raf) raf = requestAnimationFrame(render); };
-        card.addEventListener('pointermove', e => {
-            const r = inner.getBoundingClientRect();
-            const px = (e.clientX - r.left) / r.width - 0.5;
-            const py = (e.clientY - r.top) / r.height - 0.5;
-            try_ = (px * max * 2).toFixed(2) * 1;
-            trx = (-py * max * 2).toFixed(2) * 1;
-            inner.style.setProperty('--gx', ((px + 0.5) * 100).toFixed(1) + '%');
-            inner.style.setProperty('--gy', ((py + 0.5) * 100).toFixed(1) + '%');
-            kick();
-        }, { passive: true });
-        card.addEventListener('pointerleave', () => { trx = try_ = 0; kick(); });
+// hanabi — festival fireworks, night only, hero only
+(function hanabi() {
+    if (calm) return;
+    const c = document.getElementById('hanabi');
+    if (!c || !heroEl) return;
+    const ctx = c.getContext('2d');
+    let W, H, parts = [], rockets = [];
+    const COLORS = ['#ffd166', '#f2a9c4', '#b4dcff', '#caffbf', '#ff8fa3', '#ffffff'];
+    function size() {
+        const r = heroEl.getBoundingClientRect();
+        const dpr = Math.min(devicePixelRatio || 1, 1.5);
+        W = r.width; H = r.height;
+        c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    size(); addEventListener('resize', size);
+    const launch = () => ({
+        x: W * (0.15 + Math.random() * 0.7), y: H + 6,
+        vy: -(H * (0.011 + Math.random() * 0.006)),
+        col: COLORS[(Math.random() * COLORS.length) | 0],
+        target: H * (0.15 + Math.random() * 0.4)
     });
-}
-
-// magnetic pull — small elements only
-if (fine) {
-    document.querySelectorAll('.magnetic').forEach(el => {
-        el.addEventListener('pointermove', e => {
-            const r = el.getBoundingClientRect();
-            const x = ((e.clientX - r.left - r.width / 2) * 0.18).toFixed(1);
-            const y = ((e.clientY - r.top - r.height / 2) * 0.28).toFixed(1);
-            el.style.translate = `${x}px ${y}px`;
-        }, { passive: true });
-        el.addEventListener('pointerleave', () => { el.style.translate = '0 0'; });
-    });
-}
-
-// kana scroll-spy — highlight nearest chapter
-const spyMap = [['#p-lake', '.kana .k[href="#p-lake"]'], ['#p-forest', '.kana .k[href="#p-forest"]'], ['#p-road', '.kana .k[href="#p-road"]'], ['#p-miyajima', '.kana .k[href="#p-miyajima"]']];
-if ('IntersectionObserver' in window) {
-    const links = new Map(spyMap.map(([sec, link]) => [sec, document.querySelector(link)]));
-    const spy = new IntersectionObserver(es => es.forEach(e => {
-        if (!e.isIntersecting) return;
-        links.forEach(l => l && l.classList.remove('is-on'));
-        const l = links.get('#' + e.target.id);
-        if (l) l.classList.add('is-on');
-    }), { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
-    spyMap.forEach(([sec]) => { const el = document.querySelector(sec); if (el) spy.observe(el); });
-}
-
-const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-}), { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-const pio = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { e.target.closest('.place').classList.add('in'); pio.unobserve(e.target); }
-}), { threshold: 0.2 });
-document.querySelectorAll('.place figure').forEach(el => pio.observe(el));
-
-// animated counters
-const cio = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return;
-    cio.unobserve(e.target);
-    const el = e.target;
-    const end = parseInt(el.dataset.count || '0', 10);
-    if (calm || end <= 0) { el.textContent = end; return; }
-    const t0 = performance.now(), dur = 1300;
-    const step = t => {
-        const p = Math.min(1, (t - t0) / dur);
-        el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3)));
-        if (p < 1) requestAnimationFrame(step);
+    const boom = r => {
+        const n = 60 + ((Math.random() * 40) | 0);
+        for (let i = 0; i < n; i++) {
+            const a = (i / n) * Math.PI * 2 + Math.random() * 0.2;
+            const sp = 1 + Math.random() * 3.2;
+            parts.push({ x: r.x, y: r.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, decay: 0.008 + Math.random() * 0.012, col: r.col });
+        }
     };
-    requestAnimationFrame(step);
-}), { threshold: 0.6 });
-document.querySelectorAll('.num[data-count]').forEach(el => cio.observe(el));
+    (function tick() {
+        if (document.hidden) { requestAnimationFrame(tick); return; }
+        const hr = heroEl.getBoundingClientRect();
+        const live = isNight() && hr.bottom > 0 && hr.top < innerHeight;
+        ctx.clearRect(0, 0, W, H);
+        if (live) {
+            if (rockets.length < 3 && Math.random() < 0.03) rockets.push(launch());
+            rockets = rockets.filter(r => {
+                r.y += r.vy;
+                ctx.globalAlpha = 0.9;
+                ctx.fillStyle = r.col;
+                ctx.fillRect(r.x, r.y, 2, 6);
+                if (r.y <= r.target) { boom(r); return false; }
+                return true;
+            });
+            parts = parts.filter(p => {
+                p.x += p.vx; p.y += p.vy; p.vy += 0.03; p.vx *= 0.985; p.life -= p.decay;
+                if (p.life <= 0) return false;
+                ctx.globalAlpha = Math.max(0, p.life);
+                ctx.fillStyle = p.col;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 1.6, 0, Math.PI * 2);
+                ctx.fill();
+                return true;
+            });
+            ctx.globalAlpha = 1;
+        } else { rockets = []; parts = []; }
+        requestAnimationFrame(tick);
+    })();
+})();
 
-// petals — sakura spores over ink
+// summer pollen — golden drift by day, spores by night
 (function petals() {
     if (calm) return;
     const c = document.getElementById('petals');
-    if (!c) return;
+    if (!c || !heroEl) return;
     const ctx = c.getContext('2d');
     let W, H, ps = [];
     function size() {
-        const r = c.parentElement.getBoundingClientRect();
+        const r = heroEl.getBoundingClientRect();
         const dpr = Math.min(devicePixelRatio || 1, 1.5);
         W = r.width; H = r.height;
         c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr);
@@ -264,11 +269,11 @@ document.querySelectorAll('.num[data-count]').forEach(el => cio.observe(el));
         if (document.hidden) { requestAnimationFrame(tick); return; }
         if (scrollY < innerHeight * 1.3) {
             ctx.clearRect(0, 0, W, H);
+            ctx.fillStyle = isNight() ? '#f2a9c4' : '#ffe9b8';
             for (let p of ps) {
                 p.y += p.v; p.ph += 0.008; p.x += Math.sin(p.ph) * p.sw * 0.4;
                 if (p.y > H + 14) Object.assign(p, spawn(false));
                 ctx.globalAlpha = p.o;
-                ctx.fillStyle = '#f2a9c4';
                 ctx.beginPath();
                 ctx.ellipse(p.x, p.y, p.s, p.s * 0.62, p.ph, 0, Math.PI * 2);
                 ctx.fill();
@@ -289,7 +294,6 @@ if (!calm) {
         const loop = () => {
             if (document.hidden) { running = false; return; }
             if (!glass.matches(':hover')) tx = 50;
-            // water-drop spring — loose and wobbly, overshoots like fluid
             vx = (vx + (tx - gx) * 0.075) * 0.78;
             gx += vx;
             vpress = (vpress + (tpress - press) * 0.22) * 0.65; press += vpress;
@@ -332,7 +336,7 @@ if (fine) {
         dot.style.transform = `translate3d(${(e.clientX - 3.5).toFixed(1)}px,${(e.clientY - 3.5).toFixed(1)}px,0) scale(${document.body.classList.contains('link-hot') ? 2.1 : 1})`;
     }, { passive: true });
     document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; });
-    document.querySelectorAll('a, button, .nippon, .tiny-line, .season-min > div, .place').forEach(el => {
+    document.querySelectorAll('a, button, .nippon, .stab').forEach(el => {
         el.addEventListener('pointerenter', () => document.body.classList.add('link-hot'));
         el.addEventListener('pointerleave', () => document.body.classList.remove('link-hot'));
     });

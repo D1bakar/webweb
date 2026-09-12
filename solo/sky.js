@@ -1,7 +1,8 @@
-// NIHON: INK — living ink-water hero. Fails silent, photo hero stays.
+// NIHON 夏 — summer sky shader. Day azure + sun, night indigo + moon + stars.
+// Fails silent, photo hero stays.
 try {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) throw new Error('calm');
-    const canvas = document.getElementById('ink');
+    const canvas = document.getElementById('sky');
     if (!canvas) throw new Error('no canvas');
     const hero = canvas.parentElement;
 
@@ -18,7 +19,8 @@ try {
     const uni = {
         uT: { value: 0 },
         uRes: { value: new lib.Vector2(1, 1) },
-        uPtr: { value: new lib.Vector2(0.5, 0.5) },
+        uPtr: { value: new lib.Vector2(0.5, 0.6) },
+        uNight: { value: document.documentElement.dataset.theme === 'dark' ? 1 : 0 },
         uFade: { value: 1 }
     };
     const mat = new lib.ShaderMaterial({
@@ -29,41 +31,42 @@ try {
         fragmentShader: [
             'precision highp float;',
             'varying vec2 vP;',
-            'uniform float uT; uniform vec2 uRes; uniform vec2 uPtr; uniform float uFade;',
+            'uniform float uT; uniform vec2 uRes; uniform vec2 uPtr; uniform float uNight; uniform float uFade;',
             'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
             'float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);',
             '  return mix(mix(hash(i), hash(i + vec2(1, 0)), f.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), f.x), f.y); }',
             'float fbm(vec2 p){ float v = 0.0, a = 0.5; for(int i = 0; i < 5; i++){ v += a * noise(p); p *= 2.03; a *= 0.5; } return v; }',
             'void main(){',
-            '  vec2 uv = vP; vec2 ar = vec2(uRes.x / uRes.y, 1.0);',
-            '  vec2 p = (uv - 0.5) * ar;',
-            '  float t = uT * 0.05;',
-            '  vec2 warp = vec2(fbm(p * 2.2 + t), fbm(p * 2.2 - t * 1.3));',
-            '  float ink = fbm(p * 3.0 + warp * 1.6 - t * 0.7);',
-            '  ink = smoothstep(0.32, 0.78, ink);',
-            '  float d = length((uv - uPtr) * ar);',
-            '  float glow = exp(-d * d * 9.0);',
-            '  vec3 sakura = vec3(0.95, 0.55, 0.68);',
-            '  vec3 aqua = vec3(0.55, 0.75, 1.0);',
-            '  vec3 col = ink * mix(vec3(0.02, 0.02, 0.04), sakura * 0.5 + aqua * 0.25, glow);',
-            '  col += glow * sakura * 0.16 * ink;',
-            '  float vig = smoothstep(1.15, 0.25, length((uv - 0.5) * ar));',
-            '  float a = ink * vig * 0.82 * uFade;',
+            '  vec2 uv = vP;',
+            '  float dayT = uT * 0.03;',
+            '  float cl = fbm(uv * vec2(3.0, 5.0) + vec2(dayT, 0.0));',
+            '  cl = smoothstep(0.45, 0.8, cl) * smoothstep(0.0, 0.25, uv.y) * smoothstep(1.0, 0.55, uv.y);',
+            '  vec3 dayTop = vec3(0.35, 0.65, 0.9);',
+            '  vec3 dayBot = vec3(1.0, 0.93, 0.78);',
+            '  vec3 dayCol = mix(dayBot, dayTop, smoothstep(0.0, 1.0, uv.y)) + cl * 0.35;',
+            '  vec2 sd = (uv - vec2(0.72, 0.68)) * vec2(uRes.x / uRes.y, 1.0);',
+            '  dayCol += vec3(1.0, 0.75, 0.4) * exp(-dot(sd, sd) * 22.0) * 0.9;',
+            '  dayCol += vec3(1.0, 0.9, 0.7) * exp(-dot(sd, sd) * 90.0) * 0.9;',
+            '  vec3 nightTop = vec3(0.015, 0.02, 0.06);',
+            '  vec3 nightBot = vec3(0.09, 0.07, 0.16);',
+            '  vec3 nightCol = mix(nightBot, nightTop, smoothstep(0.0, 1.0, uv.y));',
+            '  vec2 mp = (uv - vec2(0.28, 0.72)) * vec2(uRes.x / uRes.y, 1.0);',
+            '  nightCol += vec3(0.95, 0.9, 0.75) * exp(-dot(mp, mp) * 160.0);',
+            '  nightCol += vec3(0.6, 0.65, 0.9) * exp(-dot(mp, mp) * 18.0) * 0.35;',
+            '  vec2 g = fract(uv * vec2(uRes.x / uRes.y * 60.0, 60.0)) - 0.5;',
+            '  float star = step(0.985, hash(floor(uv * vec2(uRes.x / uRes.y * 60.0, 60.0))));',
+            '  star *= smoothstep(0.2, 0.0, length(g)) * smoothstep(0.3, 0.8, uv.y);',
+            '  star *= 0.6 + 0.4 * sin(uT * 2.0 + hash(floor(uv * 40.0)) * 40.0);',
+            '  nightCol += vec3(star);',
+            '  float d = length((uv - uPtr) * vec2(uRes.x / uRes.y, 1.0));',
+            '  float shimmer = exp(-d * d * 7.0) * 0.12;',
+            '  vec3 col = mix(dayCol, nightCol, uNight) + shimmer;',
+            '  float a = mix(0.55, 0.88, uNight) * uFade;',
             '  gl_FragColor = vec4(col, a);',
             '}'
         ].join('\n')
     });
     scene.add(new lib.Mesh(new lib.PlaneGeometry(2, 2), mat));
-
-    // drifting spores
-    const N = innerWidth < 700 ? 90 : 180;
-    const pos = new Float32Array(N * 3), seed = new Float32Array(N);
-    for (let i = 0; i < N; i++) { pos[i * 3] = Math.random() * 2 - 1; pos[i * 3 + 1] = Math.random() * 2 - 1; pos[i * 3 + 2] = 0; seed[i] = Math.random() * 100; }
-    const pg = new lib.BufferGeometry();
-    pg.setAttribute('position', new lib.BufferAttribute(pos, 3));
-    const pm = new lib.PointsMaterial({ color: 0xf2a9c4, size: 0.008, transparent: true, opacity: 0.7, depthWrite: false, blending: lib.AdditiveBlending });
-    const spores = new lib.Points(pg, pm);
-    scene.add(spores);
 
     const size = () => {
         const r = hero.getBoundingClientRect();
@@ -73,7 +76,7 @@ try {
     size();
     addEventListener('resize', size);
 
-    let tx = 0.5, ty = 0.5, px = 0.5, py = 0.5;
+    let tx = 0.5, ty = 0.6, px = 0.5, py = 0.6, night = uni.uNight.value;
     addEventListener('pointermove', e => {
         const r = hero.getBoundingClientRect();
         tx = (e.clientX - r.left) / r.width;
@@ -82,33 +85,24 @@ try {
 
     const clock = new lib.Clock();
     let dead = false;
-    const kill = () => { dead = true; };
+    addEventListener('pagehide', () => { dead = true; });
     const tick = () => {
         if (dead) return;
         if (document.hidden) { requestAnimationFrame(tick); return; }
         const hr = hero.getBoundingClientRect();
         if (hr.bottom < -100 || hr.top > innerHeight + 100) { requestAnimationFrame(tick); return; }
-        const y = scrollY || 0;
+        const wantNight = document.documentElement.dataset.theme === 'dark' ? 1 : 0;
+        night += (wantNight - night) * 0.03;
+        uni.uNight.value = night;
         uni.uT.value = clock.getElapsedTime();
+        const y = scrollY || 0;
         uni.uFade.value = Math.max(0, 1 - y / (innerHeight * 1.1));
         px += (tx - px) * 0.04; py += (ty - py) * 0.04;
         uni.uPtr.value.set(px, py);
-        const arr = pg.attributes.position.array, tm = uni.uT.value;
-        for (let i = 0; i < N; i++) {
-            const s = seed[i];
-            arr[i * 3] += Math.sin(tm * 0.3 + s) * 0.0006 + (px - 0.5) * 0.0008;
-            arr[i * 3 + 1] += 0.0009 + Math.cos(tm * 0.22 + s) * 0.0004;
-            if (arr[i * 3 + 1] > 1.05) { arr[i * 3 + 1] = -1.05; arr[i * 3] = Math.random() * 2 - 1; }
-            if (arr[i * 3] > 1.05) arr[i * 3] = -1.05;
-            if (arr[i * 3] < -1.05) arr[i * 3] = 1.05;
-        }
-        pg.attributes.position.needsUpdate = true;
-        pm.opacity = 0.7 * uni.uFade.value;
         renderer.render(scene, cam);
         requestAnimationFrame(tick);
     };
-    addEventListener('pagehide', kill);
     requestAnimationFrame(tick);
 } catch (err) {
-    document.body.classList.add('no-ink');
+    document.body.classList.add('no-sky');
 }
