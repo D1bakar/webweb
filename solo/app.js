@@ -251,13 +251,13 @@
                 const loop = () => {
                     if (document.hidden) { running = false; return; }
                     if (!glass.matches(':hover')) tx = 50;
-                    // fluid spring — slow, smooth, slight overshoot like water
-                    vx = (vx + (tx - gx) * 0.055) * 0.82;
+                    // water-drop spring — loose and wobbly, overshoots like fluid
+                    vx = (vx + (tx - gx) * 0.075) * 0.78;
                     gx += vx;
-                    vpress = (vpress + (tpress - press) * 0.18) * 0.7; press += vpress;
+                    vpress = (vpress + (tpress - press) * 0.22) * 0.65; press += vpress;
                     glass.style.setProperty('--mx', `${gx.toFixed(2)}%`);
                     const nx = gx / 100 - 0.5;
-                    glass.style.setProperty('--ry', `${(nx * 6 + vx * 0.4).toFixed(2)}deg`);
+                    glass.style.setProperty('--ry', `${(nx * 8 + vx * 0.6).toFixed(2)}deg`);
                     glass.style.setProperty('--rx', '0deg');
                     glass.style.setProperty('--gi', (1 + Math.min(0.5, Math.abs(nx) + Math.abs(vx) * 0.015)).toFixed(2));
                     glass.style.setProperty('--press', press.toFixed(3));

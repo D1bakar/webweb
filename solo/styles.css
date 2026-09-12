@@ -16,8 +16,8 @@
     --serif: "Noto Serif JP", "Hiragino Mincho ProN", serif;
     --sans: "Inter", -apple-system, "Segoe UI", Arial, sans-serif;
     /* liquid glass tokens — 100% water, real depth */
-    --glass-blur: blur(14px) saturate(1.4);
-    --glass-blur-sm: blur(10px) saturate(1.3);
+    --glass-blur: blur(18px) saturate(1.7);
+    --glass-blur-sm: blur(12px) saturate(1.5);
     --glass-edge: rgba(255, 255, 255, 0.5);
     --glass-hi: rgba(255, 255, 255, 0.8);
     --glass-lo: rgba(255, 255, 255, 0.08);
@@ -100,24 +100,25 @@ section[id], article[id] { scroll-margin-top: 90px; }
     border: 0; border-radius: 999px;
     transform: rotateX(var(--rx)) rotateY(var(--ry)) scale(calc(1 - var(--press) * 0.02));
     background:
-        linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.04) 30%, transparent 62%),
-        rgba(255,255,255,0.05);
+        linear-gradient(180deg, rgba(255,255,255,0.32), rgba(255,255,255,0.05) 28%, rgba(255,255,255,0.0) 55%, rgba(180,220,255,0.06) 100%),
+        rgba(255,255,255,0.03);
     backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     box-shadow:
-        inset 0 1px 1px 0 rgba(255,255,255,0.9),
-        inset 0 -1px 1px 0 rgba(255,255,255,0.15),
-        inset 1px 0 1px 0 rgba(255,255,255,0.25),
-        inset -1px 0 1px 0 rgba(255,255,255,0.25),
-        inset 0 0 0 1px rgba(255,255,255,0.08),
-        0 1px 2px rgba(5,10,20,0.15),
-        0 24px 70px rgba(5,10,20,0.3);
+        inset 0 1px 1px 0 rgba(255,255,255,0.95),
+        inset 0 -2px 4px 0 rgba(140,190,255,0.18),
+        inset 2px 0 4px 0 rgba(255,255,255,0.12),
+        inset -2px 0 4px 0 rgba(140,190,255,0.1),
+        inset 0 0 0 1px rgba(255,255,255,0.1),
+        0 1px 2px rgba(5,10,20,0.12),
+        0 24px 70px rgba(5,10,20,0.28);
     transition: background 0.6s var(--expo), box-shadow 0.6s;
 }
 .nav-in::before {
     content: ""; position: absolute; inset: 0; z-index: 0; border-radius: inherit; pointer-events: none;
     background:
-        linear-gradient(180deg, rgba(255,255,255,0.5), transparent 20%),
-        radial-gradient(140px 40px at var(--mx) 4%, rgba(255,255,255,calc(0.65 * var(--gi))), transparent 70%);
+        linear-gradient(180deg, rgba(255,255,255,0.65), transparent 18%),
+        radial-gradient(70px 22px at var(--mx) 0%, rgba(255,255,255,calc(0.95 * var(--gi))), transparent 70%),
+        radial-gradient(160px 44px at var(--mx) 8%, rgba(200,230,255,calc(0.35 * var(--gi))), transparent 70%);
     opacity: 1;
 }
 .nav-in::after {
@@ -143,11 +144,11 @@ section[id], article[id] { scroll-margin-top: 90px; }
 .nav-in:active { --press: 1; }
 .nav.solid .nav-in {
     background:
-        linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.08) 55%),
-        rgba(250,245,239,0.2);
+        linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.06) 55%),
+        rgba(250,245,239,0.12);
     box-shadow:
         inset 0 1px 1px 0 #fff,
-        inset 0 -1px 1px 0 rgba(255,255,255,0.4),
+        inset 0 -2px 4px 0 rgba(140,190,255,0.15),
         inset 1px 0 1px 0 rgba(255,255,255,0.5),
         inset -1px 0 1px 0 rgba(255,255,255,0.5),
         0 1px 2px rgba(43,38,38,0.08),
@@ -199,7 +200,7 @@ body.loaded .next-hint { animation: fadeUp 1.4s var(--expo) 1s forwards, breathe
 .hero-foot { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 10px; padding-bottom: 20px; }
 .kana { display: flex; gap: 22px; opacity: 0; }
 body.loaded .kana { animation: fadeUp 1.4s var(--expo) 1.1s forwards; }
-.kana .k { position: relative; overflow: hidden; background: rgba(255,255,255,0.06); border-radius: 999px; font-family: var(--serif); font-weight: 300; font-size: 17px; color: rgba(250,245,239,0.55); cursor: pointer; padding: 8px 14px; text-decoration: none; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), inset 0 -1px 1px rgba(255,255,255,0.1), 0 6px 20px rgba(0,0,0,0.2); transition: color 0.5s var(--expo), transform 0.5s var(--expo), text-shadow 0.5s var(--expo), background 0.5s var(--expo), box-shadow 0.5s var(--expo); }
+.kana .k { position: relative; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02) 60%, rgba(180,220,255,0.05)); border-radius: 999px; font-family: var(--serif); font-weight: 300; font-size: 17px; color: rgba(250,245,239,0.6); cursor: pointer; padding: 8px 14px; text-decoration: none; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.7), inset 0 -1px 2px rgba(140,190,255,0.2), 0 6px 20px rgba(0,0,0,0.2); transition: color 0.5s var(--expo), transform 0.5s var(--expo), text-shadow 0.5s var(--expo), background 0.5s var(--expo), box-shadow 0.5s var(--expo); }
 .kana .k:hover { color: #fff; transform: translateY(-5px) scale(1.12); text-shadow: 0 0 20px rgba(233,174,185,0.9); background: rgba(255,255,255,0.1); box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.1), 0 12px 28px rgba(0,0,0,0.32); }
 .kana .k.is-on { color: #fff; text-shadow: 0 0 18px rgba(233,174,185,0.9); transform: translateY(-2px) scale(1.08); background: rgba(233,174,185,0.16); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(0,0,0,0.08), 0 10px 26px rgba(233,174,185,0.28); }
 .scroll-line { width: 1px; height: 44px; background: rgba(255,255,255,0.18); position: relative; overflow: hidden; display: block; }
@@ -252,7 +253,7 @@ body.loaded .kana { animation: fadeUp 1.4s var(--expo) 1.1s forwards; }
 .place:hover .glare { opacity: 1; }
 .kanji-ghost { position: absolute; z-index: 1; right: 32px; left: 140px; top: 20px; text-align: right; max-width: calc(100% - 172px); overflow: hidden; white-space: nowrap; font-family: var(--serif); font-weight: 300; font-size: clamp(100px, 12vw, 190px); line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.34); opacity: 0.7; pointer-events: none; user-select: none; transition: transform 0.8s var(--expo); transform: translateZ(30px); }
 .place:hover .kanji-ghost { transform: translateZ(50px); }
-.badge { position: absolute; overflow: hidden; z-index: 4; left: 32px; top: 30px; margin: 0; display: inline-flex; align-items: center; gap: 10px; max-width: calc(100% - 64px); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; font-weight: 400; letter-spacing: 0.24em; color: #fff; background: linear-gradient(180deg, rgba(255,255,255,0.22), transparent 45%, rgba(255,255,255,0.04)); border: 0; border-radius: 999px; padding: 12px 20px; backdrop-filter: var(--glass-blur-sm); -webkit-backdrop-filter: var(--glass-blur-sm); box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), inset 0 -1px 1px rgba(255,255,255,0.15), inset 1px 0 1px rgba(255,255,255,0.2), inset -1px 0 1px rgba(255,255,255,0.2), 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.6s var(--expo), background 0.6s, box-shadow 0.6s var(--expo); transform: translateZ(60px); }
+.badge { position: absolute; overflow: hidden; z-index: 4; left: 32px; top: 30px; margin: 0; display: inline-flex; align-items: center; gap: 10px; max-width: calc(100% - 64px); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; font-weight: 400; letter-spacing: 0.24em; color: #fff; background: linear-gradient(180deg, rgba(255,255,255,0.3), rgba(255,255,255,0.03) 50%, rgba(180,220,255,0.08)); border: 0; border-radius: 999px; padding: 12px 20px; backdrop-filter: var(--glass-blur-sm); -webkit-backdrop-filter: var(--glass-blur-sm); box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), inset 0 -2px 3px rgba(140,190,255,0.2), inset 1px 0 1px rgba(255,255,255,0.25), inset -1px 0 1px rgba(255,255,255,0.25), 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.6s var(--expo), background 0.6s, box-shadow 0.6s var(--expo); transform: translateZ(60px); }
 .badge::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent 50%); pointer-events: none; }
 .place:hover .badge { background: linear-gradient(180deg, rgba(255,255,255,0.22), transparent 45%, rgba(0,0,0,0.08)); box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(0,0,0,0.12), 0 14px 34px rgba(0,0,0,0.34); }
 .badge span { font-family: var(--serif); letter-spacing: 0.05em; color: var(--washi); }
