@@ -17,6 +17,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="solo/styles.css">
+    <script>
+    try { var nihonT = localStorage.getItem('nihon-theme'); if (!nihonT) nihonT = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'; document.documentElement.dataset.theme = nihonT; } catch (e) { document.documentElement.dataset.theme = 'dark'; }
+    </script>
     <script type="importmap">
     { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
     </script>
@@ -47,6 +50,10 @@
             <nav class="menu" aria-label="Sections">
                 <a class="magnetic" href="#atlas">Atlas</a>
                 <a class="magnetic" href="#seasons">Seasons</a>
+                <button id="themeBtn" class="theme-btn magnetic" aria-label="Toggle day and night">
+                    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3L19 19M19 5l-1.7 1.7M6.7 17.3L5 19"/></svg>
+                    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13.2A8 8 0 0 1 10.8 4 8 8 0 1 0 20 13.2z"/></svg>
+                </button>
             </nav>
         </div>
     </header>
@@ -55,10 +62,6 @@
         <div class="hero-still" data-depth="18" aria-hidden="true"><img src="https://images.unsplash.com/photo-1578134260566-d4083893996a?auto=format&fit=crop&w=2400&q=80" srcset="https://images.unsplash.com/photo-1578134260566-d4083893996a?auto=format&fit=crop&w=1200&q=70 1200w, https://images.unsplash.com/photo-1578134260566-d4083893996a?auto=format&fit=crop&w=2400&q=80 2400w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></div>
         <canvas id="ink" aria-hidden="true"></canvas>
         <div class="hero-shade" aria-hidden="true"></div>
-        <span class="ghostword gw-hero" data-depth="60" aria-hidden="true">墨</span>
-        <div class="orb orb-a" data-depth="46" aria-hidden="true"></div>
-        <div class="orb orb-b" data-depth="70" aria-hidden="true"></div>
-        <div class="mist m1" aria-hidden="true"></div>
         <canvas id="petals" aria-hidden="true"></canvas>
         <div class="wrap hero-in">
             <p class="hero-eyebrow">墨 — ink in motion</p>
@@ -79,23 +82,10 @@
         </div>
     </section>
 
-    <div class="marquee" aria-hidden="true">
-        <div class="track">
-            <span>湖 Kawaguchi&ensp;·&ensp;鳥 Kyoto&ensp;·&ensp;竹 Arashiyama&ensp;·&ensp;苔 Yakushima&ensp;·&ensp;茶 Shizuoka&ensp;·&ensp;道 Inaka&ensp;·&ensp;京 Kyoto&ensp;·&ensp;街 Tokyo&ensp;·&ensp;富士 Fuji&ensp;·&ensp;宮 Miyajima&ensp;·&ensp;</span>
-            <span>湖 Kawaguchi&ensp;·&ensp;鳥 Kyoto&ensp;·&ensp;竹 Arashiyama&ensp;·&ensp;苔 Yakushima&ensp;·&ensp;茶 Shizuoka&ensp;·&ensp;道 Inaka&ensp;·&ensp;京 Kyoto&ensp;·&ensp;街 Tokyo&ensp;·&ensp;富士 Fuji&ensp;·&ensp;宮 Miyajima&ensp;·&ensp;</span>
-        </div>
-    </div>
-
     <main>
         <section class="preface-sec">
             <p class="preface reveal">静けさ。</p>
-            <p class="preface-sub reveal" style="--d:.15s">an ink-dark journey — keep scrolling sideways</p>
-        </section>
-
-        <section class="stats wrap" aria-label="Journey numbers">
-            <div class="stat reveal" style="--d:0s"><span class="num" data-count="10">0</span><span class="lbl">places<br>景</span></div>
-            <div class="stat reveal" style="--d:.12s"><span class="num" data-count="4">0</span><span class="lbl">seasons<br>季</span></div>
-            <div class="stat reveal" style="--d:.24s"><span class="num" data-count="1">0</span><span class="lbl">journey<br>旅</span></div>
+            <p class="preface-sub reveal" style="--d:.15s">stillness — one scroll, sideways</p>
         </section>
 
         <section class="atlas-head wrap" id="atlas">

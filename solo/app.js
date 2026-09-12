@@ -59,6 +59,14 @@ if (toTop) toTop.addEventListener('click', () => {
 const yr = document.getElementById('year');
 if (yr) yr.textContent = new Date().getFullYear();
 
+// day / night — remembered, calm by default
+const themeBtn = document.getElementById('themeBtn');
+if (themeBtn) themeBtn.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('nihon-theme', next); } catch (e) { /* private mode */ }
+});
+
 // buttery image fade-in — opacity only, never blocks content
 document.querySelectorAll('img').forEach(img => {
     if (img.complete && img.naturalWidth > 0) img.classList.add('ok');
