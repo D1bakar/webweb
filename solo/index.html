@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NIHON — a quiet walk through lake, mountain, road, forest and sakura.">
+    <meta name="theme-color" content="#1a2233">
+    <meta property="og:title" content="NIHON 日本 — Stillness">
+    <meta property="og:description" content="A quiet scroll through lake, bamboo, road, and sakura.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1578134260566-d4083893996a?auto=format&fit=crop&w=1200&q=80">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E6%97%A5%3C/text%3E%3C/svg%3E">
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1578134260566-d4083893996a?auto=format&fit=crop&w=2400&q=80" fetchpriority="high">
+    <title>NIHON 日本 — Stillness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <filter id="lg-water" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.015 0.032" numOctaves="2" seed="7" result="n"></feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+            </filter>
+        </defs>
+    </svg>
+    <a class="skip" href="#atlas">Skip to atlas</a>
+    <div id="progress" aria-hidden="true"></div>
+    <div id="grain" aria-hidden="true"></div>
+    <div id="dot" aria-hidden="true"></div>
+
+    <header class="nav" id="nav">
+        <div class="wrap nav-in">
+            <a class="brand" href="#top"><span class="jp">日本</span><span class="rom">NIHON</span></a>
+            <nav class="menu">
+                <a href="#atlas">Atlas</a>
+                <a href="#seasons">Seasons</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="top">
+        <div class="hero-still" aria-hidden="true"><img src="https://images.unsplash.com/photo-1578134260566-d4083893996a?auto=format&fit=crop&w=2400&q=80" srcset="https://images.unsplash.com/photo-1578134260566-d4083893996a?auto=format&fit=crop&w=1200&q=70 1200w, https://images.unsplash.com/photo-1578134260566-d4083893996a?auto=format&fit=crop&w=2400&q=80 2400w" sizes="100vw" alt="" fetchpriority="high" decoding="async"></div>
+        <div class="hero-shade"></div>
+        <div class="mist m1" aria-hidden="true"></div>
+        <canvas id="petals" aria-hidden="true"></canvas>
+        <div class="wrap hero-in">
+            <h1 class="nippon">日本</h1>
+            <p class="tiny-line">kawaguchi lake — 05:12</p>
+            <p class="next-hint">scroll — つづく</p>
+        </div>
+        <div class="hero-foot wrap">
+            <div class="kana" aria-label="Journey chapters">
+                <a class="k" href="#p-lake" aria-label="Water — Lake Kawaguchi" title="Water — lake">湖</a>
+                <a class="k" href="#p-forest" aria-label="Forest — Arashiyama bamboo" title="Forest — bamboo">森</a>
+                <a class="k" href="#p-road" aria-label="Village road — Inaka" title="Road — inaka">道</a>
+                <a class="k" href="#p-miyajima" aria-label="Spirit — Miyajima floating torii" title="Spirit — miyajima">宮</a>
+            </div>
+            <span class="scroll-line" aria-hidden="true"><span></span></span>
+        </div>
+    </section>
+
+    <main>
+        <section class="preface-sec">
+            <p class="preface reveal">静けさ。</p>
+        </section>
+
+        <section class="atlas-head wrap" id="atlas">
+            <div class="reveal">
+                <p class="eyebrow-light">地図 — 10</p>
+                <h2>地図</h2>
+            </div>
+        </section>
+
+        <section class="atlas">
+            <p class="chapter reveal">水 — still water</p>
+            <article class="place" id="p-lake">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1649583693539-f36f908da137?auto=format&fit=crop&w=1600&q=80" alt="Mount Fuji over Lake Kawaguchi at dawn" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">湖</span>
+                    <p class="badge"><span>01</span> 湖</p>
+                    <div class="words reveal">
+                        <h2>湖</h2>
+                    </div>
+                    <figcaption><span class="chip">Kawaguchi</span></figcaption>
+                </figure>
+            </article>
+
+            <article class="place slim" id="p-torii">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1600&q=80" alt="Fushimi Inari torii gates in Kyoto" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">鳥</span>
+                    <p class="badge"><span>02</span> 鳥居</p>
+                    <div class="words reveal">
+                        <h2>鳥</h2>
+                    </div>
+                    <figcaption><span class="chip">Kyoto</span></figcaption>
+                </figure>
+            </article>
+
+            <p class="ma reveal">間 — pause, breathe</p>
+
+            <p class="chapter reveal">森 — deep green</p>
+            <article class="place" id="p-forest">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1702564492961-3643703480c2?auto=format&fit=crop&w=1600&q=80" alt="Arashiyama bamboo grove in Kyoto" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">竹</span>
+                    <p class="badge"><span>03</span> 竹</p>
+                    <div class="words reveal">
+                        <h2>竹</h2>
+                    </div>
+                    <figcaption><span class="chip">Arashiyama</span></figcaption>
+                </figure>
+            </article>
+
+            <article class="place slim" id="p-moss">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1600&q=80" alt="Quiet green forest light" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">苔</span>
+                    <p class="badge"><span>04</span> 苔</p>
+                    <div class="words reveal">
+                        <h2>苔</h2>
+                    </div>
+                    <figcaption><span class="chip">Yakushima</span></figcaption>
+                </figure>
+            </article>
+
+            <p class="ma reveal">静 — only wind</p>
+
+            <p class="chapter reveal">里 — village road</p>
+            <article class="place slim" id="p-tea">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1582793988951-9aed5509eb97?auto=format&fit=crop&w=1600&q=80" alt="Green tea fields in Shizuoka" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">茶</span>
+                    <p class="badge"><span>05</span> 茶</p>
+                    <div class="words reveal">
+                        <h2>茶</h2>
+                    </div>
+                    <figcaption><span class="chip">Shizuoka</span></figcaption>
+                </figure>
+            </article>
+
+            <article class="place" id="p-road">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1505069190533-da1c9af13346?auto=format&fit=crop&w=1600&q=80" alt="Country road with Mount Fuji ahead" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">道</span>
+                    <p class="badge"><span>06</span> 道</p>
+                    <div class="words reveal">
+                        <h2>道</h2>
+                    </div>
+                    <figcaption><span class="chip">Inaka</span></figcaption>
+                </figure>
+            </article>
+
+            <article class="place slim" id="p-kyo">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1600&q=80" alt="Old Kyoto temple street in the morning" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">京</span>
+                    <p class="badge"><span>07</span> 京</p>
+                    <div class="words reveal">
+                        <h2>京</h2>
+                    </div>
+                    <figcaption><span class="chip">Kyoto</span></figcaption>
+                </figure>
+            </article>
+
+            <article class="place slim" id="p-machi">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1480796927426-f609979314bd?auto=format&fit=crop&w=1600&q=80" alt="Soft Tokyo skyline fading into dusk haze" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">街</span>
+                    <p class="badge"><span>08</span> 街</p>
+                    <div class="words reveal">
+                        <h2>街</h2>
+                    </div>
+                    <figcaption><span class="chip">Tokyo</span></figcaption>
+                </figure>
+            </article>
+
+            <p class="ma reveal">桜 — one week a year</p>
+
+            <p class="chapter reveal">心 — spirit</p>
+            <article class="place" id="p-fuji">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1600&q=80" alt="Chureito pagoda with Mount Fuji and sakura" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">富士</span>
+                    <p class="badge"><span>09</span> 富士</p>
+                    <div class="words reveal">
+                        <h2>富士</h2>
+                    </div>
+                    <figcaption><span class="chip">Fuji</span></figcaption>
+                </figure>
+            </article>
+
+            <article class="place slim" id="p-miyajima">
+                <figure>
+                    <img class="layer-back" src="https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=1600&q=80" alt="Floating torii gate at Miyajima in calm water" loading="lazy" decoding="async">
+                    <div class="scrim"></div>
+                    <span class="kanji-ghost" aria-hidden="true">宮</span>
+                    <p class="badge"><span>10</span> 宮島</p>
+                    <div class="words reveal">
+                        <h2>宮</h2>
+                    </div>
+                    <figcaption><span class="chip">Miyajima</span></figcaption>
+                </figure>
+            </article>
+        </section>
+
+        <section class="seasons" id="seasons">
+            <div class="seasons-glow" aria-hidden="true"></div>
+            <div class="wrap">
+                <p class="eyebrow reveal">四季</p>
+                <div class="season-min reveal">
+                    <div><img src="https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?auto=format&fit=crop&w=800&q=70" alt="Spring — Fuji with sakura blossoms" loading="lazy"><span class="kanji">春</span><span class="rom">spring</span></div>
+                    <div><img src="https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=800&q=70" alt="Summer — lush green Nachi falls and pagoda" loading="lazy"><span class="kanji">夏</span><span class="rom">summer</span></div>
+                    <div><img src="https://images.unsplash.com/photo-1504198458649-3128b932f49e?auto=format&fit=crop&w=800&q=70" alt="Autumn — red momiji leaves at Kyoto temple" loading="lazy"><span class="kanji">秋</span><span class="rom">autumn</span></div>
+                    <div><img src="https://images.unsplash.com/photo-1557409518-691ebcd96038?auto=format&fit=crop&w=800&q=70" alt="Winter — snow village Shirakawa-go" loading="lazy"><span class="kanji">冬</span><span class="rom">winter</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="closing">
+            <div class="wrap narrow reveal">
+                <p class="kanji-lg">静</p>
+            </div>
+        </section>
+    </main>
+
+    <footer id="colophon">
+        <div class="wrap narrow">
+            <p class="dim">静けさ</p>
+        </div>
+    </footer>
+
+    <script src="lenis.min.js"></script>
+    <script>
+        const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        let lenis = null;
+        if (!calm && window.Lenis) {
+            lenis = new Lenis({ duration: 1.25, smoothWheel: true });
+            const drive = t => { lenis.raf(t); requestAnimationFrame(drive); };
+            requestAnimationFrame(drive);
+        }
+        document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+            const id = a.getAttribute('href');
+            if (id.length < 2) return;
+            const el = document.querySelector(id);
+            if (!el) return;
+            e.preventDefault();
+            if (lenis) lenis.scrollTo(el, { offset: id === '#atlas' ? -70 : -60 });
+            else el.scrollIntoView({ behavior: calm ? 'auto' : 'smooth' });
+        }));
+
+        const nav = document.getElementById('nav');
+        const progress = document.getElementById('progress');
+        const backs = [...document.querySelectorAll('.layer-back')];
+        const fine = !calm && !matchMedia('(pointer: coarse)').matches;
+        requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('loaded')));
+        let tick = false;
+        const heroEl = document.querySelector('.hero');
+        const heroStill = document.querySelector('.hero-still');
+        function frame() {
+            const y = scrollY || 0;
+            const h = document.documentElement.scrollHeight - innerHeight;
+            nav.classList.toggle('solid', y > 40);
+            if (progress) progress.style.transform = `scaleX(${h > 0 ? (y / h).toFixed(4) : 0})`;
+            if (!calm && heroEl && heroStill && y < innerHeight * 1.15) {
+                heroStill.style.transform = `translate3d(0,${(y * 0.18).toFixed(1)}px,0)`;
+            }
+            if (!calm) {
+                const vh = innerHeight;
+                for (const img of backs) {
+                    const fig = img.closest('figure');
+                    if (!fig) continue;
+                    const r = fig.getBoundingClientRect();
+                    if (r.bottom < -vh || r.top > vh * 1.5) continue;
+                    const p = (r.top + r.height / 2 - vh / 2) / vh;
+                    img.style.translate = `0 ${(p * -46).toFixed(1)}px`;
+                }
+            }
+            tick = false;
+        }
+        addEventListener('scroll', () => { if (!tick) { requestAnimationFrame(frame); tick = true; } }, { passive: true });
+        if (lenis) lenis.on('scroll', () => { if (!tick) { requestAnimationFrame(frame); tick = true; } });
+        frame();
+
+        // kana scroll-spy — highlight nearest chapter
+        const spyMap = [['#p-lake', '.kana .k[href="#p-lake"]'], ['#p-forest', '.kana .k[href="#p-forest"]'], ['#p-road', '.kana .k[href="#p-road"]'], ['#p-miyajima', '.kana .k[href="#p-miyajima"]']];
+        if ('IntersectionObserver' in window) {
+            const links = new Map(spyMap.map(([sec, link]) => [sec, document.querySelector(link)]));
+            const spy = new IntersectionObserver(es => es.forEach(e => {
+                if (!e.isIntersecting) return;
+                links.forEach(l => l && l.classList.remove('is-on'));
+                const l = links.get('#' + e.target.id);
+                if (l) l.classList.add('is-on');
+            }), { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+            spyMap.forEach(([sec]) => { const el = document.querySelector(sec); if (el) spy.observe(el); });
+        }
+
+        const io = new IntersectionObserver(es => es.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        }), { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+        const pio = new IntersectionObserver(es => es.forEach(e => {
+            if (e.isIntersecting) { e.target.closest('.place').classList.add('in'); pio.unobserve(e.target); }
+        }), { threshold: 0.25 });
+        document.querySelectorAll('.place figure').forEach(el => pio.observe(el));
+
+        // petals — sakura soft, calm
+        (function petals() {
+            if (calm) return;
+            const c = document.getElementById('petals');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            let W, H, ps = [];
+            function size() {
+                const r = c.parentElement.getBoundingClientRect();
+                const dpr = Math.min(devicePixelRatio || 1, 2);
+                W = r.width; H = r.height;
+                c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+            size(); addEventListener('resize', size);
+            const N = innerWidth < 700 ? 14 : 24;
+            for (let i = 0; i < N; i++) ps.push(spawn(true));
+            function spawn(any) {
+                return { x: Math.random() * W, y: any ? Math.random() * H : -12, s: 2 + Math.random() * 4.5, v: 0.22 + Math.random() * 0.5, ph: Math.random() * Math.PI * 2, sw: 0.4 + Math.random() * 0.9, o: 0.22 + Math.random() * 0.4 };
+            }
+            (function tick() {
+                if (scrollY < innerHeight * 1.3) {
+                    ctx.clearRect(0, 0, W, H);
+                    for (let p of ps) {
+                        p.y += p.v; p.ph += 0.008; p.x += Math.sin(p.ph) * p.sw * 0.4;
+                        if (p.y > H + 14) Object.assign(p, spawn(false));
+                        ctx.globalAlpha = p.o;
+                        ctx.fillStyle = '#f2c4cd';
+                        ctx.beginPath();
+                        ctx.ellipse(p.x, p.y, p.s, p.s * 0.62, p.ph, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.globalAlpha = 1;
+                }
+                requestAnimationFrame(tick);
+            })();
+        })();
+
+        // liquid glass — clean fluid physics: spring glare + tilt + ripple
+        if (!calm) {
+            const glass = document.querySelector('.nav-in');
+            if (glass) {
+                let tx = 50, gx = 50, vx = 0, press = 0, vpress = 0, tpress = 0;
+                let running = true;
+                const loop = () => {
+                    if (!running) return;
+                    if (!glass.matches(':hover') && !document.hidden) tx = 50;
+                    // fluid spring — slow, smooth, slight overshoot like water
+                    vx = (vx + (tx - gx) * 0.055) * 0.82;
+                    gx += vx;
+                    vpress = (vpress + (tpress - press) * 0.18) * 0.7; press += vpress;
+                    glass.style.setProperty('--mx', `${gx.toFixed(2)}%`);
+                    const nx = gx / 100 - 0.5;
+                    glass.style.setProperty('--ry', `${(nx * 6 + vx * 0.4).toFixed(2)}deg`);
+                    glass.style.setProperty('--rx', '0deg');
+                    glass.style.setProperty('--gi', (1 + Math.min(0.5, Math.abs(nx) + Math.abs(vx) * 0.015)).toFixed(2));
+                    glass.style.setProperty('--press', press.toFixed(3));
+                    requestAnimationFrame(loop);
+                };
+                requestAnimationFrame(loop);
+                document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) requestAnimationFrame(loop); });
+                glass.addEventListener('pointermove', e => {
+                    const r = glass.getBoundingClientRect();
+                    tx = ((e.clientX - r.left) / r.width) * 100;
+                }, { passive: true });
+                glass.addEventListener('pointerdown', e => {
+                    tpress = 1;
+                    const r = glass.getBoundingClientRect();
+                    const s = document.createElement('span');
+                    s.className = 'ripple';
+                    s.style.setProperty('--rx-px', `${(e.clientX - r.left).toFixed(1)}px`);
+                    s.style.setProperty('--ry-px', `${(e.clientY - r.top).toFixed(1)}px`);
+                    glass.appendChild(s);
+                    setTimeout(() => s.remove(), 850);
+                });
+                addEventListener('pointerup', () => { tpress = 0; });
+            }
+        }
+
+        if (fine) {
+            const dot = document.getElementById('dot');
+            addEventListener('pointermove', e => {
+                dot.style.opacity = '1';
+                dot.style.transform = `translate3d(${(e.clientX - 3.5).toFixed(1)}px,${(e.clientY - 3.5).toFixed(1)}px,0) scale(${document.body.classList.contains('link-hot') ? 2.1 : 1})`;
+            }, { passive: true });
+            document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; });
+            document.querySelectorAll('a, button, .nippon, .tiny-line, .season-min > div, .place').forEach(el => {
+                el.addEventListener('pointerenter', () => document.body.classList.add('link-hot'));
+                el.addEventListener('pointerleave', () => document.body.classList.remove('link-hot'));
+            });
+        }
+    </script>
+</body>
+</html>
